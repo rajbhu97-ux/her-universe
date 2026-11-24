@@ -1,0 +1,21 @@
+:root {
+  --bg-primary: #100D19;
+  --bg-secondary: #17101F;
+  --accent-pink: #FF80AD;
+  --accent-violet: #B77AE8;
+  --accent-rose: #E8A87C;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.45);
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --gradient-pink: linear-gradient(135deg, #FF80AD, #B77AE8);
+  --gradient-bg: linear-gradient(180deg, #100D19 0%, #17101F 100%);
+  --shadow-glow: 0 0 20px rgba(255, 128, 173, 0.2);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --nav-height: 64px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
