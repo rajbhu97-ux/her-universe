@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-export default function PhotoCard({ src, alt = "", style = {}, className = "", onClick }) {
+export default function PhotoCard({ src, alt = "", style = {}, className = "", onClick, contain = false }) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
@@ -24,8 +24,8 @@ export default function PhotoCard({ src, alt = "", style = {}, className = "", o
           src={src}
           alt={alt}
           loading="lazy"
-          className="img-cover"
-          style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.4s" }}
+          className={contain ? "" : "img-cover"}
+          style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.4s", width: "100%", height: contain ? "auto" : "100%", objectFit: contain ? "contain" : "cover" }}
           onLoad={() => setLoaded(true)}
           onError={() => setError(true)}
         />

@@ -12,7 +12,7 @@ const birthdayConfig = {
     family: "/images/family.svg",
     adventure: "/images/adventure.svg",
     special: "/images/special.svg",
-    surprise: "/images/surprise.svg",
+    surprise: "/images/surprise.jpg",
     cinematic1: "/images/cinematic1.svg",
     cinematic2: "/images/cinematic2.svg",
     cinematic3: "/images/cinematic3.svg",
@@ -20,11 +20,11 @@ const birthdayConfig = {
   music: "/music/background.mp3",
   surpriseLetter: `My Dearest Love,
 
-On this beautiful day, I want you to know that you are the most incredible person I have ever known. Every moment with you is a gift, every smile of yours lights up my world.
+ My dear chella pondati, :heart: You are the most beautiful part of my life, and I feel incredibly lucky to have you beside me. Your smile brightens my world, your love gives me strength, and your presence makes everything feel complete. I may not express it every day, but you mean more to me than words could ever explain.
+ 
+ I want to be your biggest supporter, your best friend, and your safe place. I want to see you achieve your dreams, celebrate your happiness, and stand beside you through every challenge.
 
-You make ordinary days extraordinary. You turn simple moments into beautiful memories. You are my best friend, my soulmate, and my forever.
-
-Thank you for being you. Thank you for choosing us. Thank you for every laugh, every hug, every quiet moment we share.
+ Let’s grow old together, create countless memories, and give Aaradhya a beautiful life. No matter what happens, I will always choose you. You are my today, tomorrow, and forever. I love you endlessly! :heart::kissing_heart:
 
 Today is your day, but every day with you feels like a celebration.
 

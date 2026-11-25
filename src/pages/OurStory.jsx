@@ -52,8 +52,8 @@ const s = {
   },
   img: {
     width: "100%",
-    height: 220,
     borderRadius: "var(--radius-lg) var(--radius-lg) 0 0",
+    overflow: "hidden",
   },
   content: {
     padding: "16px 18px 20px",
@@ -102,7 +102,7 @@ export default function OurStory() {
           >
             <div style={s.dot} />
             <div className="glass-card" style={s.card}>
-              <PhotoCard src={ch.image} alt={ch.title} style={s.img} />
+              <PhotoCard src={ch.image} alt={ch.title} style={s.img} contain />
               <div style={s.content}>
                 <h3 style={s.chTitle}>{ch.title}</h3>
                 <div style={s.meta}>
