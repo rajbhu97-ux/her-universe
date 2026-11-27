@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, ChevronDown } from "lucide-react";
 import loveNotes from "../data/loveNotes";
 import { pageTransition } from "../animations/variants";
 
@@ -13,6 +13,7 @@ const s = {
     gap: 6,
     justifyContent: "center",
     padding: "12px 20px 24px",
+    flexWrap: "wrap",
   },
   dot: {
     width: 8,
@@ -20,81 +21,65 @@ const s = {
     borderRadius: "50%",
     transition: "all 0.3s",
   },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    gap: 14,
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 16,
     padding: "0 16px 32px",
   },
-  cardWrap: {
-    perspective: 800,
+  card: {
+    borderRadius: "var(--radius-lg)",
+    overflow: "hidden",
     cursor: "pointer",
   },
-  cardInner: {
-    position: "relative",
+  cardImage: {
     width: "100%",
-    paddingBottom: "130%",
-    transformStyle: "preserve-3d",
-    transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+    height: "auto",
+    objectFit: "contain",
+    display: "block",
   },
-  face: {
-    position: "absolute",
-    inset: 0,
-    borderRadius: "var(--radius-lg)",
-    backfaceVisibility: "hidden",
-    overflow: "hidden",
-  },
-  front: {
+  cardHeader: {
     display: "flex",
-    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    padding: "14px 16px",
   },
-  frontOverlay: {
-    position: "absolute",
-    inset: 0,
-    background: "linear-gradient(to top, rgba(16,13,25,0.85) 0%, transparent 60%)",
-  },
-  frontContent: {
-    position: "relative",
-    zIndex: 1,
-    padding: "16px 12px",
-    textAlign: "center",
-    width: "100%",
+  cardLeft: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
   },
   num: {
-    fontSize: "1.6rem",
-    fontWeight: 700,
+    width: 32,
+    height: 32,
+    borderRadius: "50%",
     background: "linear-gradient(135deg, #FF80AD, #B77AE8)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-  },
-  tap: {
-    fontSize: "0.65rem",
-    color: "var(--text-muted)",
-    marginTop: 4,
-  },
-  back: {
-    background: "linear-gradient(135deg, #1a1228, #231a33)",
-    border: "1px solid rgba(255,128,173,0.15)",
     display: "flex",
-    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    padding: 16,
-    textAlign: "center",
-    transform: "rotateY(180deg)",
+    fontSize: "0.8rem",
+    fontWeight: 700,
+    flexShrink: 0,
   },
   reason: {
-    fontSize: "0.95rem",
+    fontSize: "0.92rem",
     fontWeight: 600,
-    marginBottom: 10,
     color: "var(--accent-pink)",
   },
+  chevron: {
+    transition: "transform 0.3s",
+    color: "var(--text-muted)",
+    flexShrink: 0,
+  },
+  msgWrap: {
+    overflow: "hidden",
+  },
   msg: {
-    fontSize: "0.78rem",
-    lineHeight: 1.6,
+    padding: "0 16px 18px",
+    fontSize: "0.85rem",
+    lineHeight: 1.8,
     color: "var(--text-secondary)",
+    whiteSpace: "pre-line",
   },
   celebration: {
     position: "fixed",
@@ -112,11 +97,11 @@ const s = {
 };
 
 export default function LoveNotes() {
-  const [flipped, setFlipped] = useState(new Set());
-  const allRevealed = flipped.size === loveNotes.length;
+  const [expanded, setExpanded] = useState(new Set());
+  const allRevealed = expanded.size === loveNotes.length;
 
   const toggle = (id) => {
-    setFlipped((prev) => {
+    setExpanded((prev) => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
@@ -130,57 +115,65 @@ export default function LoveNotes() {
         <p style={s.sub}>Tap each card to discover</p>
       </header>
 
-      {/* Progress */}
       <div style={s.progress}>
         {loveNotes.map((n) => (
           <div
             key={n.id}
             style={{
               ...s.dot,
-              background: flipped.has(n.id) ? "#FF80AD" : "rgba(255,255,255,0.15)",
-              transform: flipped.has(n.id) ? "scale(1.2)" : "scale(1)",
+              background: expanded.has(n.id) ? "#FF80AD" : "rgba(255,255,255,0.15)",
+              transform: expanded.has(n.id) ? "scale(1.2)" : "scale(1)",
             }}
           />
         ))}
       </div>
 
-      {/* Cards Grid */}
-      <div style={s.grid}>
+      <div style={s.list}>
         {loveNotes.map((note) => {
-          const isFlipped = flipped.has(note.id);
+          const isOpen = expanded.has(note.id);
           return (
             <motion.div
               key={note.id}
-              style={s.cardWrap}
-              onClick={() => toggle(note.id)}
+              className="glass-card"
+              style={s.card}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: note.id * 0.05 }}
+              onClick={() => toggle(note.id)}
             >
-              <div style={{ ...s.cardInner, transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)" }}>
-                {/* Front */}
-                <div style={{ ...s.face, ...s.front }}>
-                  <img src={note.front} alt="" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-                  <div style={s.frontOverlay} />
-                  <div style={s.frontContent}>
-                    <Heart size={16} color="#FF80AD" fill="#FF80AD" style={{ marginBottom: 4 }} />
-                    <div style={s.num}>#{note.id}</div>
-                    <div style={s.tap}>Tap to discover</div>
+              <img src={note.front} alt="" loading="lazy" style={s.cardImage} />
+
+              <div style={s.cardHeader}>
+                <div style={s.cardLeft}>
+                  <div style={s.num}>
+                    {isOpen ? <Heart size={14} fill="#fff" color="#fff" /> : note.id}
                   </div>
+                  <span style={s.reason}>{note.reason}</span>
                 </div>
-                {/* Back */}
-                <div style={{ ...s.face, ...s.back }}>
-                  <Heart size={20} color="#FF80AD" fill="#FF80AD" style={{ marginBottom: 12 }} />
-                  <div style={s.reason}>{note.reason}</div>
-                  <p style={s.msg}>{note.message}</p>
-                </div>
+                <ChevronDown
+                  size={20}
+                  style={{ ...s.chevron, transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}
+                />
               </div>
+
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    style={s.msgWrap}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <p style={s.msg}>{note.message}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           );
         })}
       </div>
 
-      {/* All Revealed Celebration */}
       <AnimatePresence>
         {allRevealed && (
           <motion.div
@@ -188,7 +181,7 @@ export default function LoveNotes() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setFlipped(new Set())}
+            onClick={() => setExpanded(new Set())}
           >
             <motion.div
               animate={{ scale: [1, 1.3, 1] }}

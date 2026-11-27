@@ -5,18 +5,24 @@ export default function PhotoCard({ src, alt = "", style = {}, className = "", o
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
+  const wrapStyle = {
+    position: "relative",
+    overflow: "hidden",
+    borderRadius: "var(--radius-md)",
+    minHeight: contain ? 200 : undefined,
+    ...style,
+  };
+
   return (
-    <motion.div
-      className={className}
-      style={{ position: "relative", overflow: "hidden", borderRadius: "var(--radius-md)", ...style }}
-      whileHover={{ scale: 1.02 }}
-      onClick={onClick}
-    >
+    <motion.div className={className} style={wrapStyle} whileHover={{ scale: 1.02 }} onClick={onClick}>
       {!loaded && !error && (
-        <div className="img-placeholder shimmer-bg" style={{ position: "absolute", inset: 0 }} />
+        <div
+          className="img-placeholder shimmer-bg"
+          style={{ position: "absolute", inset: 0, minHeight: 200 }}
+        />
       )}
       {error ? (
-        <div className="img-placeholder" style={{ width: "100%", height: "100%" }}>
+        <div className="img-placeholder" style={{ width: "100%", height: 200 }}>
           📷
         </div>
       ) : (
@@ -24,8 +30,14 @@ export default function PhotoCard({ src, alt = "", style = {}, className = "", o
           src={src}
           alt={alt}
           loading="lazy"
-          className={contain ? "" : "img-cover"}
-          style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.4s", width: "100%", height: contain ? "auto" : "100%", objectFit: contain ? "contain" : "cover" }}
+          style={{
+            display: "block",
+            width: "100%",
+            height: contain ? "auto" : "100%",
+            objectFit: contain ? "contain" : "cover",
+            opacity: loaded ? 1 : 0,
+            transition: "opacity 0.4s",
+          }}
           onLoad={() => setLoaded(true)}
           onError={() => setError(true)}
         />

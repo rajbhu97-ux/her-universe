@@ -3,6 +3,7 @@ import { Howl } from "howler";
 import birthdayConfig from "../data/birthdayConfig";
 
 let globalHowl = null;
+let autoStarted = false;
 
 export default function useMusic() {
   const [playing, setPlaying] = useState(false);
@@ -22,6 +23,20 @@ export default function useMusic() {
           onpause: () => setPlaying(false),
           onstop: () => setPlaying(false),
         });
+      }
+
+      // Auto-play on first user interaction
+      if (!autoStarted) {
+        const startMusic = () => {
+          if (globalHowl && !globalHowl.playing()) {
+            globalHowl.play();
+            autoStarted = true;
+          }
+          document.removeEventListener("click", startMusic);
+          document.removeEventListener("touchstart", startMusic);
+        };
+        document.addEventListener("click", startMusic, { once: true });
+        document.addEventListener("touchstart", startMusic, { once: true });
       }
     }
   }, []);

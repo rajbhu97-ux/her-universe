@@ -35,9 +35,10 @@ const s = {
     border: "1px solid transparent",
   },
   grid: {
-    padding: "8px 16px",
-    columns: "2",
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
     gap: 10,
+    padding: "8px 16px",
   },
   gridItem: {
     breakInside: "avoid",
@@ -100,7 +101,7 @@ const s = {
   },
 };
 
-const heights = [180, 220, 200, 240, 190, 210];
+
 
 export default function Memories() {
   const [filter, setFilter] = useState("All");
@@ -156,7 +157,7 @@ export default function Memories() {
             <PhotoCard
               src={m.src}
               alt={m.caption}
-              style={{ height: heights[i % heights.length] }}
+              contain
               onClick={() => openModal(m.id)}
             />
             <p style={s.caption}>{m.caption}</p>
